@@ -13,28 +13,26 @@ import ch.njol.skript.doc.*;
 
 import me.anxelok.Main;
 
-@Name("Element or Subelement of Ability")
-@Description("Gets the element or sub-element of an ability.")
+@Name("Element of Ability")
+@Description("Gets the element of an ability. Prioritizes subelement.")
 @Examples({
-        "get element of ability \"FireBlast\"",
-        "get subelement of ability \"FireBlast\""
+        "get element of ability \"Ability1\"",
+        "get element of ability \"Ability2\""
 })
 @Since(Main.VERSION)
 public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
 
     private Expression<String> abilityExpr;
-    private boolean isSubelement;
 
     static {
         Skript.registerExpression(ExprElementOrSubelementOfAbility.class, String.class,
                 ch.njol.skript.lang.ExpressionType.SIMPLE,
-                "get (element|subelement) of ability %string%");
+                "get element of ability %string%");
     }
 
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ch.njol.skript.lang.SkriptParser.ParseResult parseResult) {
         abilityExpr = (Expression<String>) exprs[0];
-        isSubelement = matchedPattern == 1; // subelement?
         return true;
     }
 
@@ -48,12 +46,10 @@ public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
         if (ability == null) return new String[0];
 
         Element element = ability.getElement();
-        if (isSubelement) {
-            // no subelement found
-            return null;  // no subelement
-        }
+        if (element == null) return new String[0];
 
-        return new String[] { element.toString() };  // return element
+        // Return the clean name of the element (without color codes or formatting)
+        return new String[] { element.getName() };
     }
 
     @Override
@@ -68,6 +64,6 @@ public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "get " + (isSubelement ? "subelement" : "element") + " of ability " + abilityExpr.toString(e, debug);
+        return "get element of ability " + abilityExpr.toString(e, debug);
     }
 }

@@ -19,13 +19,13 @@ import org.jetbrains.annotations.Nullable;
         "set {_isBendingEnabled} to player's bending status"
 })
 @Since(Main.VERSION)
-public class ExprBendingStatus extends SimpleExpression<Boolean> {
+public class ExprBendingToggledState extends SimpleExpression<Boolean> {
 
     private Expression<Player> playerExpr;
     private boolean checkStatus;  // true for on, false for off
 
     static {
-        Skript.registerExpression(ExprBendingStatus.class, Boolean.class, ExpressionType.SIMPLE,
+        Skript.registerExpression(ExprBendingToggledState.class, Boolean.class, ExpressionType.SIMPLE,
                 "%player%'s bending toggled state");
     }
 
