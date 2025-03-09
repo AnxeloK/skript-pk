@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.anxelok</groupId>
+    <artifactId>skript-pk</artifactId>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <name>skript-pk</name>
+
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <dependencies>
+        <!-- Spigot API -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.15-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Skript API -->
+        <dependency>
+            <groupId>io.github.skriptlang</groupId>
+            <artifactId>skript</artifactId>
+            <version>2.10.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ProjectKorra -->
+        <dependency>
+            <groupId>com.projectkorra</groupId>
+            <artifactId>projectkorra</artifactId>
+            <version>1.11.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <defaultGoal>clean package install</defaultGoal>
+        <finalName>${project.name}-${project.version}</finalName>
+        <sourceDirectory>${project.basedir}/src/</sourceDirectory>
+
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/</directory>
+                <targetPath>.</targetPath>
+                <includes>
+                    <include>**/*.yml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- Maven Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>8</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dir>${project.build.directory}</dir>
+    </properties>
+</project>

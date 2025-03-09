@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="skript-pk">
+    <output-path>$PROJECT_DIR$/out/artifacts/skript_pk</output-path>
+    <root id="archive" name="skript-pk.jar">
+      <element id="module-output" name="skript-pk" />
+    </root>
+  </artifact>
+</component>
