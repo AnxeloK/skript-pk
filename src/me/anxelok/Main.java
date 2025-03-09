@@ -8,8 +8,11 @@ import java.io.IOException;
 
 public class Main extends JavaPlugin {
 
+    public static final String VERSION = "v1.0";
+
     @Override
     public void onEnable() {
+
         getLogger().info("[Skript-PK] Enabling Skript-PK...");
 
         // check if Skript is installed

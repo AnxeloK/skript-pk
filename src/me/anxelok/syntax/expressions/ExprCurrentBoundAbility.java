@@ -5,6 +5,7 @@ import ch.njol.skript.doc.*;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.projectkorra.projectkorra.BendingPlayer;
+import me.anxelok.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
         "if player's current bound ability is \"WaterManipulation\":",
         "    send \"You have WaterManipulation bound!\""
 })
-@Since("1.0")
+@Since(Main.VERSION)
 public class ExprCurrentBoundAbility extends SimpleExpression<String> {
 
     private ch.njol.skript.lang.Expression<Player> playerExpr;

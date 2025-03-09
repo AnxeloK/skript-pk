@@ -1,5 +1,5 @@
 name: Skript-PK
-version: 1.0
+version: ${project.version}
 main: me.anxelok.Main
 api-version: 1.13
 description: A Skript addon for ProjectKorra.

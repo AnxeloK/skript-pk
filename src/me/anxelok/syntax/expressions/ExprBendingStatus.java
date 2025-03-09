@@ -8,6 +8,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.projectkorra.projectkorra.BendingPlayer;
+import me.anxelok.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 @Examples({
         "set {_isBendingEnabled} to player's bending status"
 })
-@Since("1.0")
+@Since(Main.VERSION)
 public class ExprBendingStatus extends SimpleExpression<Boolean> {
 
     private Expression<Player> playerExpr;

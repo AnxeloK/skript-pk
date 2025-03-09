@@ -10,6 +10,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.projectkorra.projectkorra.BendingPlayer;
+import me.anxelok.Main;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -24,7 +25,7 @@ import java.util.Map;
         "unbind ability from slot 1 of player",
         "unbind ability \"EarthWave\" of player"
 })
-@Since("1.0")
+@Since(Main.VERSION)
 public class EffBindUnbindAbility extends Effect {
 
     private Expression<String> abilityExpr;

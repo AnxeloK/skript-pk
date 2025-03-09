@@ -10,6 +10,7 @@ import com.projectkorra.projectkorra.BendingPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
+import me.anxelok.Main;
 
 @Name("Toggle Bending")
 @Description("Toggles a player's bending ability on/off")
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
         "toggle player's bending on",
         "toggle player's bending off"
 })
-@Since("1.0")
+@Since(Main.VERSION)
 public class EffToggleBending extends Effect {
     private Expression<Player> playerExpr;
     private String mode; // toggle, on, off

@@ -10,6 +10,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.projectkorra.projectkorra.object.Preset;
+import me.anxelok.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ import java.util.UUID;
         "delete player preset \"playerPreset\" for player",
         "delete global preset \"presetName\""
 })
-@Since("1.0")
+@Since(Main.VERSION)
 public class EffPresetManagement extends Effect {
 
     private Expression<String> presetNameExpr;

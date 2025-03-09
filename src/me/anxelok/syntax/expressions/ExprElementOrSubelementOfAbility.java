@@ -11,12 +11,15 @@ import com.projectkorra.projectkorra.ability.Ability;
 import com.projectkorra.projectkorra.Element;
 import ch.njol.skript.doc.*;
 
+import me.anxelok.Main;
+
 @Name("Element or Subelement of Ability")
 @Description("Gets the element or sub-element of an ability.")
 @Examples({
         "get element of ability \"FireBlast\"",
         "get subelement of ability \"FireBlast\""
 })
+@Since(Main.VERSION)
 public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
 
     private Expression<String> abilityExpr;
