@@ -29,33 +29,33 @@ public class ExprCurrentBoundAbility extends SimpleExpression<String> {
 
     @Override
     public boolean init(ch.njol.skript.lang.Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ch.njol.skript.lang.SkriptParser.ParseResult parseResult) {
-        playerExpr = (ch.njol.skript.lang.Expression<Player>) exprs[0];
+        playerExpr = (ch.njol.skript.lang.Expression<Player>) exprs[0];  // set player expression
         return true;
     }
 
     @Nullable
     @Override
     protected String[] get(Event e) {
-        Player player = playerExpr.getSingle(e);
-        if (player == null) return new String[0];
-        BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-        if (bPlayer == null) return new String[0];
-        String ability = bPlayer.getBoundAbilityName();
-        return ability != null ? new String[]{ ability } : new String[0];
+        Player player = playerExpr.getSingle(e);  // get player
+        if (player == null) return new String[0];  // check if player exists
+        BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);  // get bending player
+        if (bPlayer == null) return new String[0];  // check if bending player exists
+        String ability = bPlayer.getBoundAbilityName();  // get bound ability
+        return ability != null ? new String[]{ ability } : new String[0];  // return ability if exists
     }
 
     @Override
     public boolean isSingle() {
-        return true;
+        return true;  // return single value
     }
 
     @Override
     public Class<? extends String> getReturnType() {
-        return String.class;
+        return String.class;  // return String type
     }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return playerExpr.toString(e, debug) + "'s current bound ability";
+        return playerExpr.toString(e, debug) + "'s current bound ability";  // convert to string
     }
 }

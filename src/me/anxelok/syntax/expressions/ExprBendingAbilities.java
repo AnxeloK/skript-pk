@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 public class ExprBendingAbilities extends SimpleExpression<String> {
 
     private ch.njol.skript.lang.Expression<Player> playerExpr;
-    private static final int MAX_SLOTS = 9; // Maximum number of ability slots
+    private static final int MAX_SLOTS = 9; // max ability slots
 
     static {
         Skript.registerExpression(ExprBendingAbilities.class, String.class,
@@ -38,28 +38,25 @@ public class ExprBendingAbilities extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
         Player player = playerExpr.getSingle(e);
-        if (player == null) return new String[0];
+        if (player == null) return new String[0];  // no player
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-        if (bPlayer == null) return new String[0];
+        if (bPlayer == null) return new String[0];  // no bending player
 
-        // Get the abilities map (slot -> ability name)
+        // get abilities from slots
         java.util.Map<Integer, String> abilities = bPlayer.getAbilities();
 
-        // Create an array with a fixed length of MAX_SLOTS.
+        // create output array
         String[] output = new String[MAX_SLOTS];
         for (int slot = 1; slot <= MAX_SLOTS; slot++) {
-            if (abilities != null && abilities.containsKey(slot)) {
-                output[slot - 1] = abilities.get(slot);
-            } else {
-                output[slot - 1] = ""; // or you could use "none" as a placeholder
-            }
+            // fill slots with abilities or empty
+            output[slot - 1] = abilities != null && abilities.containsKey(slot) ? abilities.get(slot) : "";
         }
         return output;
     }
 
     @Override
     public boolean isSingle() {
-        return false;  // We return a list of abilities (one for each slot).
+        return false;  // return list
     }
 
     @Override

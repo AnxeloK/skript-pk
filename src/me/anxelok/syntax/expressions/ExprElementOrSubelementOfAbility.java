@@ -31,7 +31,7 @@ public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ch.njol.skript.lang.SkriptParser.ParseResult parseResult) {
         abilityExpr = (Expression<String>) exprs[0];
-        isSubelement = matchedPattern == 1; // Check if "subelement" was used
+        isSubelement = matchedPattern == 1; // subelement?
         return true;
     }
 
@@ -44,20 +44,18 @@ public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
         Ability ability = CoreAbility.getAbility(abilityName);
         if (ability == null) return new String[0];
 
-        // Get the element
         Element element = ability.getElement();
         if (isSubelement) {
-            // If subelement is required, check if the ability has a subelement
-            // You may need a custom approach to handle sub-elements based on your ProjectKorra version
-            return null;  // If no subelement exists, return null
+            // no subelement found
+            return null;  // no subelement
         }
 
-        return new String[] { element.toString() };  // Return element name
+        return new String[] { element.toString() };  // return element
     }
 
     @Override
     public boolean isSingle() {
-        return true;  // We return one element or sub-element.
+        return true;  // only one result
     }
 
     @Override

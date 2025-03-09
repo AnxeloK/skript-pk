@@ -21,9 +21,10 @@ import org.jetbrains.annotations.Nullable;
 @Since("1.0")
 public class EffToggleBending extends Effect {
     private Expression<Player> playerExpr;
-    private String mode; // "toggle", "on", "off"
+    private String mode; // toggle, on, off
 
     static {
+        // register the effect with Skript
         Skript.registerEffect(EffToggleBending.class,
                 "toggle %player%'s bending",
                 "toggle %player%'s bending to on",
@@ -51,6 +52,7 @@ public class EffToggleBending extends Effect {
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
         if (bPlayer == null) return;
 
+        // toggle, on, or off
         switch (mode) {
             case "toggle":
                 bPlayer.toggleBending();
@@ -66,6 +68,7 @@ public class EffToggleBending extends Effect {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
+        // return effect string
         return "toggle " + playerExpr.toString(e, debug) + "'s bending" +
                 (mode.equals("toggle") ? "" : " to " + mode);
     }

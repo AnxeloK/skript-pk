@@ -30,31 +30,30 @@ public class EffBindUnbindAbility extends Effect {
     private Expression<String> abilityExpr;
     private Expression<Player> playerExpr;
     private Expression<Integer> slotExpr;
-    private boolean isBind; // true if bind, false if unbind by slot
-    private boolean unbindByName; // true if unbind by name
+    private boolean isBind; // true for bind, false for unbind by slot
+    private boolean unbindByName; // true for unbind by name
 
     static {
         Skript.registerEffect(EffBindUnbindAbility.class,
-                "bind %string% to current slot of %player%",
-                "unbind ability from [slot] %integer% of %player%",
-                "unbind ability %string% of %player%");
+                "bind %string% to (slot %integer%|current slot) of %player%",
+                "unbind ability (from slot %integer%|current slot|%string%) of %player%");
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         if (matchedPattern == 0) {
-            // Bind syntax: "bind %string% to current slot of %player%"
+            // bind ability to current slot
             abilityExpr = (Expression<String>) exprs[0];
             playerExpr = (Expression<Player>) exprs[1];
             isBind = true;
         } else if (matchedPattern == 1) {
-            // Unbind by slot: "unbind ability from [slot] %integer% of %player%"
+            // unbind by slot
             slotExpr = (Expression<Integer>) exprs[0];
             playerExpr = (Expression<Player>) exprs[1];
             isBind = false;
         } else {
-            // Unbind by name: "unbind ability %string% of %player%"
+            // unbind by ability name
             abilityExpr = (Expression<String>) exprs[0];
             playerExpr = (Expression<Player>) exprs[1];
             unbindByName = true;
@@ -76,23 +75,41 @@ public class EffBindUnbindAbility extends Effect {
         }
 
         if (isBind) {
+            // bind ability to specific slot or current slot
             String ability = abilityExpr.getSingle(e);
             if (ability == null) return;
-            int currentSlot = player.getInventory().getHeldItemSlot();
-            abilities.put(currentSlot, ability);
-            bPlayer.setAbilities((HashMap<Integer, String>) abilities);  // Cast to HashMap
+
+            Integer slot;
+            if (slotExpr != null) {
+                slot = slotExpr.getSingle(e); // Use specific slot
+            } else {
+                slot = player.getInventory().getHeldItemSlot(); // Use current slot
+            }
+
+            if (slot == null) return;
+            abilities.put(slot, ability);
+            bPlayer.setAbilities((HashMap<Integer, String>) abilities);
         } else if (unbindByName) {
+            // unbind ability by name
             String ability = abilityExpr.getSingle(e);
             if (ability == null) return;
             abilities.entrySet().removeIf(entry -> entry.getValue().equalsIgnoreCase(ability));
-            bPlayer.setAbilities((HashMap<Integer, String>) abilities);  // Cast to HashMap
+            bPlayer.setAbilities((HashMap<Integer, String>) abilities);
         } else {
-            Integer slot = slotExpr.getSingle(e);
+            // unbind by slot number or current slot
+            Integer slot;
+            if (slotExpr != null) {
+                slot = slotExpr.getSingle(e); // Use specific slot
+            } else {
+                slot = player.getInventory().getHeldItemSlot(); // Use current slot
+            }
+
             if (slot == null) return;
             abilities.remove(slot);
-            bPlayer.setAbilities((HashMap<Integer, String>) abilities);  // Cast to HashMap
+            bPlayer.setAbilities((HashMap<Integer, String>) abilities);
         }
     }
+
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {

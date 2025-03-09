@@ -39,8 +39,8 @@ public class EffPresetManagement extends Effect {
     private Expression<String> presetNameExpr;
     private Expression<String> abilityExpr;
     private Expression<Integer> slotExpr;
-    private Expression<String> playerExpr; // For player-specific presets
-    private Expression<String> newPresetNameExpr; // For renaming presets
+    private Expression<String> playerExpr; // for player presets
+    private Expression<String> newPresetNameExpr; // for renaming
     private boolean isCreatePreset;
     private boolean isChangeSlot;
     private boolean isCreatePlayerPreset;
@@ -106,13 +106,13 @@ public class EffPresetManagement extends Effect {
             String[] abilities = abilityExpr.getAll(e);
             if (presetName == null || abilities == null) return;
 
-            // Create a map of abilities for the global preset
+            // create map of abilities for global preset
             Map<Integer, String> presetMap = new HashMap<>();
             for (int i = 0; i < abilities.length; i++) {
-                presetMap.put(i + 1, abilities[i]); // Slot numbers start from 1
+                presetMap.put(i + 1, abilities[i]); // ability slots start at 1
             }
 
-            // Save the global preset in externalPresets (global storage)
+            // store global preset
             Preset.externalPresets.put(presetName, new ArrayList<>(Arrays.asList(abilities)));
         } else if (isCreatePlayerPreset) {
             String presetName = presetNameExpr.getSingle(e);
@@ -120,7 +120,7 @@ public class EffPresetManagement extends Effect {
             String[] abilities = abilityExpr.getAll(e);
             if (presetName == null || playerName == null || abilities == null) return;
 
-            // Create the player-specific preset
+            // create player preset
             Player player = Bukkit.getPlayer(playerName);
             if (player != null) {
                 Map<Integer, String> playerPresetMap = new HashMap<>();
@@ -128,16 +128,16 @@ public class EffPresetManagement extends Effect {
                     playerPresetMap.put(i + 1, abilities[i]);
                 }
 
-                // Use HashMap directly to match the constructor
+                // create player preset object and store it
                 Preset playerPreset = new Preset(player.getUniqueId(), presetName, new HashMap<>(playerPresetMap));
-                Preset.presets.put(player.getUniqueId(), Arrays.asList(playerPreset)); // Store player preset
+                Preset.presets.put(player.getUniqueId(), Arrays.asList(playerPreset));
             }
         } else if (isCreatePresetFromAnother) {
             String presetName = presetNameExpr.getSingle(e);
             String existingPresetName = abilityExpr.getSingle(e);
             if (presetName == null || existingPresetName == null) return;
 
-            // Copy abilities from the existing preset and create a new one
+            // copy abilities from existing preset
             ArrayList<String> existingAbilities = Preset.externalPresets.get(existingPresetName);
             if (existingAbilities != null) {
                 Preset.externalPresets.put(presetName, existingAbilities);
@@ -148,7 +148,7 @@ public class EffPresetManagement extends Effect {
             String ability = abilityExpr.getSingle(e);
             if (slot == null || presetName == null || ability == null) return;
 
-            // Update the ability in the corresponding slot for the preset (global or player)
+            // update slot ability for global or player preset
             if (playerExpr != null) {
                 String playerName = playerExpr.getSingle(e);
                 Player player = Bukkit.getPlayer(playerName);
@@ -162,7 +162,7 @@ public class EffPresetManagement extends Effect {
                 ArrayList<String> presetAbilities = Preset.externalPresets.get(presetName);
                 if (presetAbilities != null && slot >= 1 && slot <= presetAbilities.size()) {
                     presetAbilities.set(slot - 1, ability);
-                    Preset.externalPresets.put(presetName, presetAbilities); // Update the global preset
+                    Preset.externalPresets.put(presetName, presetAbilities); // update global preset
                 }
             }
         } else if (isRenamePreset) {
@@ -170,18 +170,18 @@ public class EffPresetManagement extends Effect {
             String newPresetName = newPresetNameExpr.getSingle(e);
             if (oldPresetName == null || newPresetName == null) return;
 
-            // Rename the preset in global storage
+            // rename preset in global storage
             ArrayList<String> abilities = Preset.externalPresets.get(oldPresetName);
             if (abilities != null) {
                 Preset.externalPresets.put(newPresetName, abilities);
-                Preset.externalPresets.remove(oldPresetName); // Remove old name
+                Preset.externalPresets.remove(oldPresetName); // remove old name
             }
         } else if (isDeletePreset) {
             String presetName = presetNameExpr.getSingle(e);
             String playerName = playerExpr != null ? playerExpr.getSingle(e) : null;
             if (presetName == null) return;
 
-            // Delete the preset from global storage or player-specific presets
+            // delete preset from global or player-specific storage
             if (playerName != null) {
                 Player player = Bukkit.getPlayer(playerName);
                 if (player != null) {
@@ -194,7 +194,7 @@ public class EffPresetManagement extends Effect {
     }
 
     private ArrayList<String> getPlayerPresetAbilities(UUID playerUUID, String presetName) {
-        // Get the player-specific preset abilities
+        // get player preset abilities
         for (Preset preset : Preset.presets.get(playerUUID)) {
             if (preset.getName().equals(presetName)) {
                 return new ArrayList<>(preset.getAbilities().values());

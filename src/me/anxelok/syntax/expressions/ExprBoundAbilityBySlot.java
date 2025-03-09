@@ -19,10 +19,9 @@ import org.jetbrains.annotations.Nullable;
 public class ExprBoundAbilityBySlot extends SimpleExpression<String> {
 
     private ch.njol.skript.lang.Expression<Player> playerExpr;
-    private int slot;  // 1 for first, 2 for second, etc.
+    private int slot;  // stores the ability slot (1 for first, etc.)
 
     static {
-        // Using marks to map ordinals to numbers:
         Skript.registerExpression(ExprBoundAbilityBySlot.class, String.class,
                 ch.njol.skript.lang.ExpressionType.SIMPLE,
                 "%player%'s [(1¦first)|(2¦second)|(3¦third)|(4¦fourth)|(5¦fifth)|(6¦sixth)|(7¦seventh)|(8¦eighth)|(9¦ninth)] bound ability");
@@ -31,7 +30,7 @@ public class ExprBoundAbilityBySlot extends SimpleExpression<String> {
     @Override
     public boolean init(ch.njol.skript.lang.Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ch.njol.skript.lang.SkriptParser.ParseResult parseResult) {
         playerExpr = (ch.njol.skript.lang.Expression<Player>) exprs[0];
-        slot = parseResult.mark;  // The mark gives the corresponding integer (1–9)
+        slot = parseResult.mark;  // set slot based on parsed pattern
         return true;
     }
 
@@ -39,31 +38,31 @@ public class ExprBoundAbilityBySlot extends SimpleExpression<String> {
     @Override
     protected String[] get(Event e) {
         Player player = playerExpr.getSingle(e);
-        if (player == null) return new String[0];
+        if (player == null) return new String[0];  // return empty if no player
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-        if (bPlayer == null) return new String[0];
+        if (bPlayer == null) return new String[0];  // return empty if no bending player
         java.util.HashMap<Integer, String> abilities = bPlayer.getAbilities();
-        if (abilities == null || !abilities.containsKey(slot)) return new String[0];
+        if (abilities == null || !abilities.containsKey(slot)) return new String[0];  // return empty if no ability found for slot
         String ability = abilities.get(slot);
-        return new String[]{ ability };
+        return new String[]{ ability };  // return the found ability
     }
 
     @Override
     public boolean isSingle() {
-        return true;
+        return true;  // expression returns a single value
     }
 
     @Override
     public Class<? extends String> getReturnType() {
-        return String.class;
+        return String.class;  // returns a string type
     }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return playerExpr.toString(e, debug) + "'s " + ordinal(slot) + " bound ability";
+        return playerExpr.toString(e, debug) + "'s " + ordinal(slot) + " bound ability";  // string representation
     }
 
-    // Helper method to convert number to ordinal string.
+    // converts integer to its ordinal form (e.g., 1 -> first)
     private String ordinal(int i) {
         switch(i) {
             case 1: return "first";

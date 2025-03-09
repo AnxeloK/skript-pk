@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class ExprBendingStatus extends SimpleExpression<Boolean> {
 
     private Expression<Player> playerExpr;
-    private boolean checkStatus;  // true to check if bending is on, false to check if bending is off
+    private boolean checkStatus;  // true for on, false for off
 
     static {
         Skript.registerExpression(ExprBendingStatus.class, Boolean.class, ExpressionType.SIMPLE,
@@ -38,18 +38,18 @@ public class ExprBendingStatus extends SimpleExpression<Boolean> {
     @Override
     public Boolean[] get(Event e) {
         Player player = playerExpr.getSingle(e);
-        if (player == null) return new Boolean[0];  // Return empty array if no player found
+        if (player == null) return new Boolean[0];  // no player
 
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-        if (bPlayer == null) return new Boolean[0];  // Return empty array if no BendingPlayer is found
+        if (bPlayer == null) return new Boolean[0];  // no bending player
 
-        // Return whether bending is enabled or not
+        // check if bending is on
         return new Boolean[] { bPlayer.isToggled() };
     }
 
     @Override
     public boolean isSingle() {
-        return true;  // We return a single boolean (whether bending is on or off)
+        return true;  // returns one value
     }
 
     @Override
