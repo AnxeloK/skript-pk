@@ -1,64 +1,67 @@
 package me.anxelok.syntax.effects;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
-import ch.njol.skript.doc.Name;
-import ch.njol.skript.doc.Since;
+import ch.njol.skript.doc.*;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import com.projectkorra.projectkorra.BendingPlayer;
-import me.anxelok.Main;
+import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.event.PlayerBindChangeEvent;
+import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
+import me.anxelok.Main;
 
-import java.util.HashMap;
-import java.util.Map;
-
-@Name("Bind and Unbind Ability")
-@Description("Bind or unbind an ability to/from a player or preset")
+@Name("Bind and Unbind Abilities")
+@Description("Binds or unbinds a bending ability to/from a player's hotbar slot or clears all abilities")
 @Examples({
-        "bind \"EarthWave\" to current slot of player",
-        "unbind ability from slot 1 of player",
-        "unbind ability \"EarthWave\" of player"
+        "bind ability \"EarthBlast\" to player's slot 5",
+        "bind ability \"EarthBlast\" to player's current slot",
+        "unbind player's ability \"EarthBlast\"",
+        "unbind player's slot 5",
+        "unbind player's all abilities"
 })
 @Since(Main.VERSION)
 public class EffBindUnbindAbility extends Effect {
-
-    private Expression<String> abilityExpr;
     private Expression<Player> playerExpr;
+    private Expression<String> abilityExpr;
     private Expression<Integer> slotExpr;
-    private boolean isBind; // true for bind, false for unbind by slot
-    private boolean unbindByName; // true for unbind by name
+    private boolean isBinding = false;
+    private boolean clearAll = false;
+    private boolean currentSlot = false;
 
     static {
         Skript.registerEffect(EffBindUnbindAbility.class,
-                "bind %string% to (slot %integer%|current slot) of %player%",
-                "unbind ability (from slot %integer%|current slot|%string%) of %player%");
+                "bind ability %string% to %player%'s (slot %integer% | current slot)",
+                "unbind player's (all abilities | ability %string% | slot %integer%)");
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        if (matchedPattern == 0) {
-            // bind ability to current slot
+        if (matchedPattern == 0 || matchedPattern == 1) {
             abilityExpr = (Expression<String>) exprs[0];
             playerExpr = (Expression<Player>) exprs[1];
-            isBind = true;
-        } else if (matchedPattern == 1) {
-            // unbind by slot
-            slotExpr = (Expression<Integer>) exprs[0];
-            playerExpr = (Expression<Player>) exprs[1];
-            isBind = false;
+            if (matchedPattern == 0) {
+                slotExpr = (Expression<Integer>) exprs[2];
+            } else {
+                currentSlot = true; // Set current slot mode if "current slot" is used
+            }
+            isBinding = true; // This is a binding operation
         } else {
-            // unbind by ability name
-            abilityExpr = (Expression<String>) exprs[0];
-            playerExpr = (Expression<Player>) exprs[1];
-            unbindByName = true;
-            isBind = false;
+            playerExpr = (Expression<Player>) exprs[0];
+            if (exprs.length == 2) {
+                abilityExpr = (Expression<String>) exprs[1];
+            }
+            if (matchedPattern == 1) {
+                clearAll = true; // Unbinding all abilities
+            } else if (exprs.length == 3) {
+                slotExpr = (Expression<Integer>) exprs[2]; // Unbinding a specific slot
+            }
+            isBinding = false; // This is an unbinding operation
         }
         return true;
     }
@@ -67,59 +70,115 @@ public class EffBindUnbindAbility extends Effect {
     protected void execute(Event e) {
         Player player = playerExpr.getSingle(e);
         if (player == null) return;
+
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
         if (bPlayer == null) return;
 
-        Map<Integer, String> abilities = bPlayer.getAbilities();
-        if (abilities == null) {
-            abilities = new HashMap<>();
-        }
-
-        if (isBind) {
-            // bind ability to specific slot or current slot
+        // Binding logic
+        if (isBinding) {
             String ability = abilityExpr.getSingle(e);
             if (ability == null) return;
 
-            Integer slot;
-            if (slotExpr != null) {
-                slot = slotExpr.getSingle(e); // Use specific slot
+            if (currentSlot) {
+                Integer slot = bPlayer.getCurrentSlot(); // Get the current hotbar slot of the player
+                bindAbilityToSlot(bPlayer, ability, slot, player);
             } else {
-                slot = player.getInventory().getHeldItemSlot(); // Use current slot
+                Integer slot = slotExpr.getSingle(e);
+                if (slot == null) return;
+                bindAbilityToSlot(bPlayer, ability, slot, player);
             }
-
-            if (slot == null) return;
-            abilities.put(slot, ability);
-            bPlayer.setAbilities((HashMap<Integer, String>) abilities);
-        } else if (unbindByName) {
-            // unbind ability by name
-            String ability = abilityExpr.getSingle(e);
-            if (ability == null) return;
-            abilities.entrySet().removeIf(entry -> entry.getValue().equalsIgnoreCase(ability));
-            bPlayer.setAbilities((HashMap<Integer, String>) abilities);
-        } else {
-            // unbind by slot number or current slot
-            Integer slot;
-            if (slotExpr != null) {
-                slot = slotExpr.getSingle(e); // Use specific slot
-            } else {
-                slot = player.getInventory().getHeldItemSlot(); // Use current slot
+        } else { // Unbinding logic
+            if (clearAll) {
+                unbindAllAbilities(bPlayer, player);
+            } else if (abilityExpr != null) {
+                String ability = abilityExpr.getSingle(e);
+                if (ability != null) {
+                    unbindAbility(bPlayer, ability, player);
+                }
+            } else if (slotExpr != null) {
+                Integer slot = slotExpr.getSingle(e);
+                if (slot != null) {
+                    unbindSlot(bPlayer, slot, player);
+                }
             }
-
-            if (slot == null) return;
-            abilities.remove(slot);
-            bPlayer.setAbilities((HashMap<Integer, String>) abilities);
         }
     }
 
+    // Bind ability to a specific slot
+    private void bindAbilityToSlot(BendingPlayer bPlayer, String ability, Integer slot, Player player) {
+        if (MultiAbilityManager.playerAbilities.containsKey(player)) {
+            return; // Prevent binding if the player has multi-ability active
+        }
+
+        CoreAbility coreAbil = CoreAbility.getAbility(ability);
+        if (coreAbil == null) return;
+
+        PlayerBindChangeEvent event = new PlayerBindChangeEvent(player, coreAbil.getName(), slot, true, false);
+        com.projectkorra.projectkorra.ProjectKorra.plugin.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+
+        bPlayer.getAbilities().put(slot, coreAbil.getName());
+        bPlayer.saveAbility(coreAbil.getName(), slot);
+    }
+
+    // Unbind specific ability
+    private void unbindAbility(BendingPlayer bPlayer, String ability, Player player) {
+        for (int i = 1; i <= 9; i++) {
+            if (bPlayer.getAbilities().get(i).equals(ability)) {
+                PlayerBindChangeEvent event = new PlayerBindChangeEvent(player, ability, i, false, false);
+                com.projectkorra.projectkorra.ProjectKorra.plugin.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) return;
+
+                bPlayer.getAbilities().remove(i);
+                bPlayer.saveAbility(null, i);
+            }
+        }
+    }
+
+    // Unbind specific slot
+    private void unbindSlot(BendingPlayer bPlayer, Integer slot, Player player) {
+        String ability = bPlayer.getAbilities().get(slot);
+        if (ability != null) {
+            PlayerBindChangeEvent event = new PlayerBindChangeEvent(player, ability, slot, false, false);
+            com.projectkorra.projectkorra.ProjectKorra.plugin.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) return;
+
+            bPlayer.getAbilities().remove(slot);
+            bPlayer.saveAbility(null, slot);
+        }
+    }
+
+    // Unbind all abilities
+    private void unbindAllAbilities(BendingPlayer bPlayer, Player player) {
+        for (int i = 1; i <= 9; i++) {
+            String ability = bPlayer.getAbilities().get(i);
+            if (ability != null) {
+                PlayerBindChangeEvent event = new PlayerBindChangeEvent(player, ability, i, false, false);
+                com.projectkorra.projectkorra.ProjectKorra.plugin.getServer().getPluginManager().callEvent(event);
+                if (event.isCancelled()) continue;
+
+                bPlayer.getAbilities().remove(i);
+                bPlayer.saveAbility(null, i);
+            }
+        }
+    }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        if (isBind) {
-            return "bind " + abilityExpr.toString(e, debug) + " to current slot of " + playerExpr.toString(e, debug);
-        } else if (unbindByName) {
-            return "unbind ability " + abilityExpr.toString(e, debug) + " of " + playerExpr.toString(e, debug);
+        if (isBinding) {
+            if (currentSlot) {
+                return "bind ability " + abilityExpr.toString(e, debug) + " to " + playerExpr.toString(e, debug) + "'s current slot";
+            } else {
+                return "bind ability " + abilityExpr.toString(e, debug) + " to " + playerExpr.toString(e, debug) + "'s slot " + slotExpr.toString(e, debug);
+            }
         } else {
-            return "unbind ability from slot " + slotExpr.toString(e, debug) + " of " + playerExpr.toString(e, debug);
+            if (clearAll) {
+                return "unbind player's all abilities";
+            } else if (abilityExpr != null) {
+                return "unbind player's ability " + abilityExpr.toString(e, debug);
+            } else {
+                return "unbind player's slot " + slotExpr.toString(e, debug);
+            }
         }
     }
 }
