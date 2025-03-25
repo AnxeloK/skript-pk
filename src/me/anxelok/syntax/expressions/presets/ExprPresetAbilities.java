@@ -1,4 +1,4 @@
-package me.anxelok.syntax.expressions;
+package me.anxelok.syntax.expressions.presets;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;
@@ -20,30 +20,42 @@ public class ExprPresetAbilities extends SimpleExpression<String> {
 
     private ch.njol.skript.lang.Expression<Player> playerExpr;
     private ch.njol.skript.lang.Expression<String> presetNameExpr;
+    private boolean external;
 
     static {
         Skript.registerExpression(ExprPresetAbilities.class, String.class,
                 ch.njol.skript.lang.ExpressionType.SIMPLE,
-                "abilities (of|from) %player%'s preset %string%");
+                "abilities (of|from) %player%'s preset %string%",
+                "abilities (of|from) external preset %string%");
     }
 
     @Override
     public boolean init(ch.njol.skript.lang.Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ch.njol.skript.lang.SkriptParser.ParseResult parseResult) {
-        playerExpr = (ch.njol.skript.lang.Expression<Player>) exprs[0];
-        presetNameExpr = (ch.njol.skript.lang.Expression<String>) exprs[1];
+        external = matchedPattern == 1;
+        if (!external) {
+            playerExpr = (ch.njol.skript.lang.Expression<Player>) exprs[0];
+            presetNameExpr = (ch.njol.skript.lang.Expression<String>) exprs[1];
+        } else {
+            presetNameExpr = (ch.njol.skript.lang.Expression<String>) exprs[0];
+        }
         return true;
     }
 
     @Override
     protected String[] get(Event e) {
-        Player player = playerExpr.getSingle(e);
         String presetName = presetNameExpr.getSingle(e);
-        if (player == null || presetName == null) return new String[0];
+        if (presetName == null) return new String[0];
 
-        HashMap<Integer, String> abilities = Preset.getPresetContents(player, presetName);
-        if (abilities == null) return new String[0];
-
-        return abilities.values().toArray(new String[0]);
+        if (external) {
+            if (!Preset.externalPresetExists(presetName)) return new String[0];
+            return Preset.externalPresets.get(presetName.toLowerCase()).toArray(new String[0]);
+        } else {
+            Player player = playerExpr.getSingle(e);
+            if (player == null) return new String[0];
+            HashMap<Integer, String> abilities = Preset.getPresetContents(player, presetName);
+            if (abilities == null) return new String[0];
+            return abilities.values().toArray(new String[0]);
+        }
     }
 
     @Override
@@ -58,6 +70,7 @@ public class ExprPresetAbilities extends SimpleExpression<String> {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "abilities of " + playerExpr.toString(e, debug) + "'s preset " + presetNameExpr.toString(e, debug);
+        return "abilities of " + (external ? "external preset " + presetNameExpr.toString(e, debug) : 
+               playerExpr.toString(e, debug) + "'s preset " + presetNameExpr.toString(e, debug));
     }
 }

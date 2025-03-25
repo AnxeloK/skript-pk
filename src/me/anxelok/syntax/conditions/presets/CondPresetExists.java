@@ -1,4 +1,4 @@
-package me.anxelok.syntax.conditions;
+package me.anxelok.syntax.conditions.presets;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;

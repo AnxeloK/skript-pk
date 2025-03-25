@@ -1,4 +1,4 @@
-package me.anxelok.syntax.effects;
+package me.anxelok.syntax.effects.bendingplayer;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;
@@ -13,34 +13,29 @@ import org.jetbrains.annotations.Nullable;
 import me.anxelok.Main;
 
 @Name("Toggle Bending")
-@Description("Toggles a player's bending ability on/off")
+@Description("Toggles a player's bending to true/false")
 @Examples({
         "toggle player's bending",
-        "toggle player's bending on",
-        "toggle player's bending off"
+        "toggle player's bending to true",
+        "toggle player's bending to false"
 })
 @Since(Main.VERSION)
 public class EffToggleBending extends Effect {
     private Expression<Player> playerExpr;
-    private String mode; // toggle, on, off
+    private Expression<Boolean> booleanExpr;
 
     static {
         // register the effect with Skript
         Skript.registerEffect(EffToggleBending.class,
-                "toggle %player%'s bending",
-                "toggle %player%'s bending to on",
-                "toggle %player%'s bending to off");
+                "toggle %player%'s bending[ to %boolean%]");
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         playerExpr = (Expression<Player>) exprs[0];
-
-        switch (matchedPattern) {
-            case 0: mode = "toggle"; break;
-            case 1: mode = "on"; break;
-            case 2: mode = "off"; break;
+        if (exprs.length > 1) {
+            booleanExpr = (Expression<Boolean>) exprs[1];
         }
         return true;
     }
@@ -53,24 +48,21 @@ public class EffToggleBending extends Effect {
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
         if (bPlayer == null) return;
 
-        // toggle, on, or off
-        switch (mode) {
-            case "toggle":
-                bPlayer.toggleBending();
-                break;
-            case "on":
-                if (!bPlayer.isToggled()) bPlayer.toggleBending();
-                break;
-            case "off":
-                if (bPlayer.isToggled()) bPlayer.toggleBending();
-                break;
+        if (booleanExpr != null) {
+            Boolean value = booleanExpr.getSingle(e);
+            if (value != null) {
+                if (value != bPlayer.isToggled()) {
+                    bPlayer.toggleBending();
+                }
+            }
+        } else {
+            bPlayer.toggleBending();
         }
     }
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        // return effect string
         return "toggle " + playerExpr.toString(e, debug) + "'s bending" +
-                (mode.equals("toggle") ? "" : " to " + mode);
+                (booleanExpr != null ? " to " + booleanExpr.toString(e, debug) : "");
     }
 }

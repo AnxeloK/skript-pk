@@ -1,4 +1,4 @@
-package me.anxelok.syntax.effects;
+package me.anxelok.syntax.effects.presets;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;
@@ -14,7 +14,7 @@ import org.bukkit.event.Event;
 import java.util.HashMap;
 
 @Name("Create Preset")
-@Description("Creates a new empty preset for a player")
+@Description("Creates a new empty preset for a player. If a preset with the same name exists, it will be overwritten.")
 @Examples({
     "create new preset \"combo1\" for player",
     "create preset \"watermoves\" for player"
@@ -44,8 +44,17 @@ public class EffCreatePreset extends Effect {
         
         if (name == null || player == null) return;
         
-        // Create empty preset
-        new Preset(player.getUniqueId(), name, new HashMap<>());
+        // Delete existing preset if it exists
+        Preset existingPreset = Preset.getPreset(player, name);
+        if (existingPreset != null) {
+            existingPreset.delete().thenRun(() -> {
+                // Create new preset after deletion
+                new Preset(player.getUniqueId(), name, new HashMap<>()).save(player);
+            });
+        } else {
+            // Create new preset directly if none exists
+            new Preset(player.getUniqueId(), name, new HashMap<>()).save(player);
+        }
     }
 
     @Override

@@ -16,18 +16,18 @@ import me.anxelok.Main;
 @Name("Element of Ability")
 @Description("Gets the element of an ability. Prioritizes subelement.")
 @Examples({
-        "get element of ability \"Ability1\"",
-        "get element of ability \"Ability2\""
+        " element of ability \"Ability1\"",
+        "element of ability \"Ability2\""
 })
 @Since(Main.VERSION)
-public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
+public class ExprElementOfAbility extends SimpleExpression<String> {
 
     private Expression<String> abilityExpr;
 
     static {
-        Skript.registerExpression(ExprElementOrSubelementOfAbility.class, String.class,
+        Skript.registerExpression(ExprElementOfAbility.class, String.class,
                 ch.njol.skript.lang.ExpressionType.SIMPLE,
-                "get element of ability %string%");
+                "element of ability %string%");
     }
 
     @Override
@@ -64,6 +64,6 @@ public class ExprElementOrSubelementOfAbility extends SimpleExpression<String> {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "get element of ability " + abilityExpr.toString(e, debug);
+        return "element of ability " + abilityExpr.toString(e, debug);
     }
 }

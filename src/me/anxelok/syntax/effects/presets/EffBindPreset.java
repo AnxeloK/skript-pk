@@ -1,4 +1,4 @@
-package me.anxelok.syntax.effects;
+package me.anxelok.syntax.effects.presets;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;

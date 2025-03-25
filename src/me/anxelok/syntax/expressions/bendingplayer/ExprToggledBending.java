@@ -1,4 +1,4 @@
-package me.anxelok.syntax.expressions;
+package me.anxelok.syntax.expressions.bendingplayer;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;
@@ -16,17 +16,17 @@ import org.jetbrains.annotations.Nullable;
 @Name("Bending Status")
 @Description("Checks if a player's bending is enabled (true) or disabled (false).")
 @Examples({
-        "set {_isBendingEnabled} to player's bending status"
+        "set {_isBendingEnabled} to player's toggled bending"
 })
 @Since(Main.VERSION)
-public class ExprBendingToggledState extends SimpleExpression<Boolean> {
+public class ExprToggledBending extends SimpleExpression<Boolean> {
 
     private Expression<Player> playerExpr;
     private boolean checkStatus;  // true for on, false for off
 
     static {
-        Skript.registerExpression(ExprBendingToggledState.class, Boolean.class, ExpressionType.SIMPLE,
-                "%player%'s bending toggled state");
+        Skript.registerExpression(ExprToggledBending.class, Boolean.class, ExpressionType.SIMPLE,
+                "%player%'s toggled bending");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ExprBendingToggledState extends SimpleExpression<Boolean> {
         BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
         if (bPlayer == null) return new Boolean[0];  // no bending player
 
-        // check if bending is on
+        // check if bending is true
         return new Boolean[] { bPlayer.isToggled() };
     }
 

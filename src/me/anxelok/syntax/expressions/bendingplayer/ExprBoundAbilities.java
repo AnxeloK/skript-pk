@@ -1,4 +1,4 @@
-package me.anxelok.syntax.expressions;
+package me.anxelok.syntax.expressions.bendingplayer;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.*;
@@ -13,20 +13,20 @@ import org.jetbrains.annotations.Nullable;
 @Name("Bending Abilities")
 @Description("Returns a list of all abilities bound to a player as a fixed-size array (slots 1 to 9). Unset slots will be empty.")
 @Examples({
-        "set {_abilities::*} to player's abilities",
+        "set {_abilities::*} to player's bound abilities",
         "loop {_abilities::*}:",
         "    send \"Slot %loop-index%: %loop-value%\""
 })
 @Since(Main.VERSION)
-public class ExprBendingAbilities extends SimpleExpression<String> {
+public class ExprBoundAbilities extends SimpleExpression<String> {
 
     private ch.njol.skript.lang.Expression<Player> playerExpr;
     private static final int MAX_SLOTS = 9; // max ability slots
 
     static {
-        Skript.registerExpression(ExprBendingAbilities.class, String.class,
+        Skript.registerExpression(ExprBoundAbilities.class, String.class,
                 ch.njol.skript.lang.ExpressionType.SIMPLE,
-                "%player%'s abilities");
+                "%player%'s bound abilities");
     }
 
     @Override
