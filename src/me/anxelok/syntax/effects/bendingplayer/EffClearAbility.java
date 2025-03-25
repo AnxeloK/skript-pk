@@ -26,7 +26,7 @@ public class EffClearAbility extends Effect {
 
     static {
         Skript.registerEffect(EffClearAbility.class,
-                "clear %player%'s slot [%integer%]");
+                "clear %player%'s slot [%-integer%]");
     }
 
     @Override

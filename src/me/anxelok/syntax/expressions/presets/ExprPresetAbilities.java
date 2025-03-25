@@ -49,13 +49,16 @@ public class ExprPresetAbilities extends SimpleExpression<String> {
         if (external) {
             if (!Preset.externalPresetExists(presetName)) return new String[0];
             return Preset.externalPresets.get(presetName.toLowerCase()).toArray(new String[0]);
-        } else {
-            Player player = playerExpr.getSingle(e);
-            if (player == null) return new String[0];
-            HashMap<Integer, String> abilities = Preset.getPresetContents(player, presetName);
-            if (abilities == null) return new String[0];
-            return abilities.values().toArray(new String[0]);
         }
+
+        Player player = playerExpr.getSingle(e);
+        if (player == null) return new String[0];
+        
+        // Use the correct method to get preset contents
+        java.util.HashMap<Integer, String> abilities = Preset.getPresetContents(player, presetName);
+        if (abilities == null) return new String[0];
+        
+        return abilities.values().toArray(new String[0]);
     }
 
     @Override

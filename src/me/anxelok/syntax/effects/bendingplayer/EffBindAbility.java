@@ -30,7 +30,7 @@ public class EffBindAbility extends Effect {
 
     static {
         Skript.registerEffect(EffBindAbility.class,
-                "bind ability %string% to %player% [slot %integer%]");
+                "bind ability %string% to %player% [slot %-integer%]");
     }
 
     @Override

@@ -27,7 +27,7 @@ public class EffToggleBending extends Effect {
     static {
         // register the effect with Skript
         Skript.registerEffect(EffToggleBending.class,
-                "toggle %player%'s bending[ to %boolean%]");
+                "toggle %player%'s bending[ to %-boolean%]");
     }
 
     @Override
