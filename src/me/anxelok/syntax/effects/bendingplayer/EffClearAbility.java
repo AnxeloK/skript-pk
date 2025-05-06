@@ -13,11 +13,16 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 import me.anxelok.Main;
 
-@Name("Clear Slot")
-@Description("Clears ability from a player's slot")
+@Name("Clear ProjectKorra Ability Binding")
+@Description("Removes any bending ability bound to a specified hotbar slot. If no slot number is given, clears the ability from the player's currently selected slot. Use this to remove unwanted abilities from a player's hotbar.")
 @Examples({
-        "clear player's slot 5",
-        "clear player's slot"
+    "# Remove the ability from slot 5",
+    "clear player's slot 5",
+    "# Clear the current selected slot",
+    "clear player's slot",
+    "# Reset all of a player's ability bindings",
+    "loop 9 times:",
+    "    clear player's slot loop-number"
 })
 @Since(Main.VERSION)
 public class EffClearAbility extends Effect {

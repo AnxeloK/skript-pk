@@ -15,11 +15,18 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 import me.anxelok.Main;
 
-@Name("Bind Abilities")
-@Description("Binds a ability to a player's slot")
+@Name("Bind ProjectKorra Ability")
+@Description("Assigns a ProjectKorra bending ability to a specific hotbar slot (1-9) for a player. If no slot is specified, it uses the player's currently selected hotbar slot.")
 @Examples({
-        "bind ability \"EarthBlast\" to player slot 5",
-        "bind ability \"EarthBlast\" to player"
+    "# Bind the EarthBlast ability to slot 5",
+    "bind ability \"EarthBlast\" to player slot 5",
+    "# Bind WaterSpout to the current hotbar slot",
+    "bind ability \"WaterSpout\" to player",
+    "# Create a basic bender setup",
+    "bind ability \"AirBlast\" to player slot 1",
+    "bind ability \"WaterWhip\" to player slot 2",
+    "bind ability \"EarthBlast\" to player slot 3",
+    "bind ability \"FireBlast\" to player slot 4"
 })
 @Since(Main.VERSION)
 public class EffBindAbility extends Effect {

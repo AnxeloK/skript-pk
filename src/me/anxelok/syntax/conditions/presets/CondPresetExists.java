@@ -12,11 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Preset Exists")
-@Description("Checks if a preset exists for a player")
+@Name("Check Bending Preset Existence")
+@Description("Checks if a bending preset configuration exists. Can verify both player-specific presets and server-wide (external) presets.")
 @Examples({
-    "if player has preset \"basic\":",
-    "if preset \"waterbender\" exists externally:"
+    "# Check if a player has a personal preset named 'waterstyle'",
+    "if player has preset \"waterstyle\":",
+    "    send \"You have your water moves saved!\"",
+    "# Check if there's a global preset available",
+    "if preset \"basic_firebender\" exists externally:",
+    "    send \"The basic firebender preset is available for use!\""
 })
 @Since(Main.VERSION)
 public class CondPresetExists extends Condition {

@@ -13,10 +13,25 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 @Name("Bind Preset")
-@Description("Binds a preset's abilities to a player")
+@Description({
+    "Binds a preset's abilities to a player.",
+    "Can bind either player-specific presets or external presets.",
+    "The abilities will be bound to the player's hotbar in the order they were added to the preset."
+})
 @Examples({
-    "bind preset \"basic\" to player",
-    "bind external preset \"waterbender\" to player"
+    "# Bind a player's personal preset",
+    "bind preset \"watermoves\" to player",
+    "",
+    "# Bind an external preset",
+    "bind external preset \"basic_fire\" to player",
+    "",
+    "# Bind presets to multiple players",
+    "loop all players:",
+    "    bind external preset \"starter\" to loop-player",
+    "",
+    "# Bind preset after creating it",
+    "create preset \"combat\" for player with abilities \"FireBlast\", \"AirBlast\"",
+    "bind preset \"combat\" to player"
 })
 @Since(Main.VERSION)
 public class EffBindPreset extends Effect {

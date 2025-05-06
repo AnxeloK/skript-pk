@@ -10,12 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Bending Abilities")
-@Description("Returns a list of all abilities bound to a player as a fixed-size array (slots 1 to 9). Unset slots will be empty.")
+@Name("Get All Bound Bending Abilities")
+@Description("Returns a list of all abilities currently bound to a player's slots (1-9). Empty slots will return an empty string. The returned list is always 9 elements long, representing each slot.")
 @Examples({
+        "# Store all bound abilities in a list variable",
         "set {_abilities::*} to player's bound abilities",
+        "# Loop through each slot to display abilities",
         "loop {_abilities::*}:",
-        "    send \"Slot %loop-index%: %loop-value%\""
+        "    # Skip empty slots",
+        "    if loop-value is not \"\":",
+        "        send \"Slot %loop-index%: %loop-value%\""
 })
 @Since(Main.VERSION)
 public class ExprBoundAbilities extends SimpleExpression<String> {

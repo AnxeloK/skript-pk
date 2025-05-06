@@ -12,12 +12,25 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 @Name("Bound Ability")
-@Description("Returns the player's bound ability. If a slot is specified, returns the ability from that slot. Otherwise returns the current bound ability.")
+@Description({
+    "Returns the player's currently bound ability or the ability bound to a specific slot.",
+    "If no slot is specified, returns the ability from the current active slot.",
+    "Returns nothing if the slot is empty or invalid."
+})
 @Examples({
-        "set {_ability} to player's bound ability",
-        "set {_ability} to player's bound ability in slot 1",
-        "if player's bound ability is \"WaterManipulation\":",
-        "    send \"You have WaterManipulation bound!\""
+    "# Get current bound ability",
+    "set {_ability} to player's bound ability",
+    "",
+    "# Get ability from specific slot",
+    "set {_slotOne} to player's bound ability in slot 1",
+    "",
+    "# Check for specific abilities",
+    "if player's bound ability is \"WaterManipulation\":",
+    "    send \"You have WaterManipulation ready!\"",
+    "",
+    "# Loop through all slots (1-9)",
+    "loop 9 times:",
+    "    set {_slot::%loop-number%} to player's bound ability in slot loop-number"
 })
 @Since(Main.VERSION)
 public class ExprBoundAbility extends SimpleExpression<String> {

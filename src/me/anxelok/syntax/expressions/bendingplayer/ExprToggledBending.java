@@ -14,9 +14,21 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 @Name("Bending Status")
-@Description("Checks if a player's bending is enabled (true) or disabled (false).")
+@Description({
+    "Checks if a player's bending is enabled or disabled.",
+    "Returns true if bending is enabled, false if disabled."
+})
 @Examples({
-        "set {_isBendingEnabled} to player's toggled bending"
+    "# Check if player has bending enabled",
+    "set {_isBendingEnabled} to player's toggled bending",
+    "",
+    "# Use in conditions",
+    "if player's toggled bending is false:",
+    "    send \"Your bending is currently disabled!\"",
+    "",
+    "# Store status for multiple players",
+    "loop all players:",
+    "    set {_status::%loop-player%} to loop-player's toggled bending"
 })
 @Since(Main.VERSION)
 public class ExprToggledBending extends SimpleExpression<Boolean> {

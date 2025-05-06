@@ -16,12 +16,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Name("All Presets")
-@Description("Returns all presets - either player's presets, external presets, or both")
+@Name("Get All Bending Presets")
+@Description("Returns a list of all preset names. Can return player-specific presets, external (global) presets, or both.")
 @Examples({
-    "send all presets of player to player",
-    "send all external presets to player",
-    "send all presets to player"
+    "# Get all presets of a specific player",
+    "set {_presets::*} to all presets of player",
+    "# Get all global presets",
+    "set {_globalPresets::*} to all external presets",
+    "# Loop through player's presets",
+    "loop all presets of player:",
+    "    send \"You have preset: %loop-value%\""
 })
 @Since(Main.VERSION)
 public class ExprAllPresets extends SimpleExpression<String> {

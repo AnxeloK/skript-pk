@@ -13,11 +13,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 @Name("Delete Preset")
-@Description("Deletes a preset from a player or an external preset")
+@Description({
+    "Deletes a preset from a player or removes an external preset.",
+    "Player presets are only deleted for that specific player.",
+    "External presets are completely removed from the server."
+})
 @Examples({
+    "# Delete a player's personal preset",
     "delete preset \"combo1\" from player",
+    "",
+    "# Alternative syntax for player presets",
     "delete player's preset \"watermoves\"",
-    "delete external preset \"basic\""
+    "",
+    "# Delete an external preset",
+    "delete external preset \"basic\"",
+    "",
+    "# Delete all presets matching a pattern",
+    "loop all of player's presets:",
+    "    if loop-value starts with \"temp_\":",
+    "        delete preset loop-value from player"
 })
 @Since(Main.VERSION)
 public class EffDeletePreset extends Effect {

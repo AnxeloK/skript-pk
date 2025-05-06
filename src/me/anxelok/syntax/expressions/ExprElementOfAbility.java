@@ -13,11 +13,14 @@ import ch.njol.skript.doc.*;
 
 import me.anxelok.Main;
 
-@Name("Element of Ability")
-@Description("Gets the element of an ability. Prioritizes subelement.")
+@Name("Get Bending Element of Ability")
+@Description("Returns the element type (Water, Earth, Fire, Air, Chi, or sub-elements) of a specified ProjectKorra ability. Returns nothing if the ability doesn't exist.")
 @Examples({
-        " element of ability \"Ability1\"",
-        "element of ability \"Ability2\""
+    "# Get the element of WaterSpout",
+    "set {_element} to element of ability \"WaterSpout\"",
+    "# Check if an ability is from a specific element",
+    "if element of ability \"EarthBlast\" is \"Earth\":",
+    "    send \"That's an earth ability!\""
 })
 @Since(Main.VERSION)
 public class ExprElementOfAbility extends SimpleExpression<String> {

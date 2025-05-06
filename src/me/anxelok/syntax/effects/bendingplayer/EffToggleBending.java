@@ -12,12 +12,18 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 import me.anxelok.Main;
 
-@Name("Toggle Bending")
-@Description("Toggles a player's bending to true/false")
+@Name("Toggle Player's Bending")
+@Description("Enables or disables all bending abilities for a player. When disabled, the player cannot use any bending abilities until re-enabled. Can toggle between states or set to a specific state.")
 @Examples({
-        "toggle player's bending",
-        "toggle player's bending to true",
-        "toggle player's bending to false"
+    "# Toggle between enabled/disabled",
+    "toggle player's bending",
+    "# Force bending to be enabled",
+    "toggle player's bending to true",
+    "# Force bending to be disabled",
+    "toggle player's bending to false",
+    "# Toggle based on a condition",
+    "if player's health is less than 5:",
+    "    toggle player's bending to false"
 })
 @Since(Main.VERSION)
 public class EffToggleBending extends Effect {

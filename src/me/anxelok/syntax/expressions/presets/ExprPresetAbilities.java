@@ -13,8 +13,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 
 @Name("Preset Abilities")
-@Description("Gets all abilities from a player's preset.")
-@Examples("set {_abilities::*} to abilities of player's preset \"basic\"")
+@Description({
+    "Gets all abilities from a player's preset or an external preset.",
+    "Returns a list of ability names stored in the preset."
+})
+@Examples({
+    "# Get abilities from a player's personal preset named 'basic'",
+    "set {_abilities::*} to abilities of player's preset \"basic\"",
+    "",
+    "# Get abilities from an external preset named 'waterbender'",
+    "set {_abilities::*} to abilities from external preset \"waterbender\"",
+    "",
+    "# Loop through preset abilities",
+    "loop abilities of player's preset \"combo1\":",
+    "    send \"%loop-value%\" to player"
+})
 @Since(Main.VERSION)
 public class ExprPresetAbilities extends SimpleExpression<String> {
 
