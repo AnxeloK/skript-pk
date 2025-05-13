@@ -27,8 +27,3 @@ Designed for simplicity, it empowers server owners to create unique bending expe
 - Minecraft 1.15+
 - Skript 2.10.1+
 - ProjectKorra (Core) 1.11.1+
-
----
-
-
-**Developer:** AnxeloK
