@@ -10,6 +10,8 @@ This addon acts as a bridge between Skript and ProjectKorra, providing syntax to
 - Manage bending abilities and player presets.
 - Toggle bending mechanics for players.
 - Retrieve bending-related data for use in scripts.
+- Register custom ProjectKorra abilities directly from Skript scripts.
+- Manipulate ProjectKorra temp blocks and cooldowns through Skript effects and expressions.
 
 Designed for simplicity, it empowers server owners to create unique bending experiences without direct plugin modification.
 
@@ -27,3 +29,10 @@ Designed for simplicity, it empowers server owners to create unique bending expe
 - Minecraft 1.15+
 - Skript 2.10.1+
 - ProjectKorra (Core) 1.11.1+
+
+---
+
+## What's New in v1.5
+- Ability structure & runtime wiring to register custom ProjectKorra abilities purely via Skript (`ability` structure, start/progress/remove triggers).
+- Temp block helpers (`create/revert pk temporary block`, `location is a pk temporary block`) to mirror ProjectKorra's `TempBlock` API.
+- Cooldown management syntax aligned with `/bending cooldown` (`pk cooldown %name% of %player%`, `set/reset pk cooldown` effects, `pk active cooldowns of %player%`).
