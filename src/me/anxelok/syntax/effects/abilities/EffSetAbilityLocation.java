@@ -16,8 +16,8 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Set PK Ability Location")
-@Description("Sets the anchor location for a running Skript-PK ability instance, allowing you to track it independently from the player.")
+@Name("Set Ability Location")
+@Description("Sets the anchor location for a running ability instance generated through this addon, allowing you to track it independently from the player.")
 @Examples({
     "set location of event-ability to location of player",
     "set location of {_ability} to {_marker}"

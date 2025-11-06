@@ -15,12 +15,12 @@ import me.anxelok.Main;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Stop PK Ability")
-@Description("Ends a running Skript-PK ability. If used without an ability argument inside start/progress/remove, it stops the active ability instance.")
+@Name("Stop Ability")
+@Description("Ends a running ProjectKorra ability generated through this addon. When used without an argument inside start/progress/remove sections, it stops the active ability instance.")
 @Examples({
-    "stop pk ability",
-    "stop pk ability event-ability",
-    "stop pk ability {_ability}"
+    "stop ability",
+    "stop ability event-ability",
+    "stop ability {_ability}"
 })
 @Since(Main.VERSION)
 public class EffStopAbility extends Effect {
@@ -29,8 +29,8 @@ public class EffStopAbility extends Effect {
         me.anxelok.ability.SkriptAbilityRegistry.ensureTypeRegistered();
         Skript.registerEffect(
             EffStopAbility.class,
-            "stop [pk] ability %skriptability%",
-            "stop [pk] ability"
+            "stop ability %skriptability%",
+            "stop ability"
         );
     }
 
@@ -47,7 +47,7 @@ public class EffStopAbility extends Effect {
     protected void execute(Event event) {
         SkriptGeneratedAbility ability = abilityExpression != null ? abilityExpression.getSingle(event) : resolveAbility(event);
         if (ability == null) {
-            Skript.warning("No PK ability available to stop.");
+            Skript.warning("No addon-managed ability available to stop.");
             return;
         }
         ability.remove();
@@ -63,8 +63,8 @@ public class EffStopAbility extends Effect {
     @Override
     public String toString(@Nullable Event event, boolean debug) {
         if (abilityExpression != null) {
-            return "stop PK ability " + abilityExpression.toString(event, debug);
+            return "stop ability " + abilityExpression.toString(event, debug);
         }
-        return "stop current PK ability";
+        return "stop current ability";
     }
 }

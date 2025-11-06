@@ -21,12 +21,12 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Create PK Temp Block")
+@Name("Create Temp Block")
 @Description("Creates a ProjectKorra TempBlock at the specified location, optionally reverting after a duration.")
 @Examples({
-    "create pk temporary block at player with stone for 5 seconds",
-    "create pk temporary block at {_loc} with blockdata {_data}",
-    "create pk temporary block at location of victim with water for 2 seconds"
+    "create temp block at location of player with stone for 5 seconds",
+    "create temp block at {_loc} with blockdata {_data}",
+    "create temp block at location of victim with water for 2 seconds"
 })
 @Since(Main.VERSION)
 public class EffCreateTempBlock extends Effect {
@@ -34,8 +34,8 @@ public class EffCreateTempBlock extends Effect {
     static {
         Skript.registerEffect(
             EffCreateTempBlock.class,
-            "create [a] [pk] temp[orary] block at %location% with %itemtype% [for %-timespan%]",
-            "create [a] [pk] temp[orary] block at %location% with blockdata %blockdata% [for %-timespan%]"
+            "create [a] temp[orary] block at %location% with %itemtype% [for %-timespan%]",
+            "create [a] temp[orary] block at %location% with blockdata %blockdata% [for %-timespan%]"
         );
     }
 
@@ -63,7 +63,7 @@ public class EffCreateTempBlock extends Effect {
 
         BlockData blockData = resolveBlockData(dataExpression.getSingle(event));
         if (blockData == null) {
-            Skript.error("Unable to resolve block data for PK temp block creation.");
+            Skript.error("Unable to resolve block data for temp block creation.");
             return;
         }
 
@@ -81,7 +81,7 @@ public class EffCreateTempBlock extends Effect {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "create pk temp block at " + locationExpression.toString(event, debug);
+        return "create temp block at " + locationExpression.toString(event, debug);
     }
 
     private @Nullable BlockData resolveBlockData(@Nullable Object input) {

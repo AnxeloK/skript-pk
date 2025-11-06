@@ -12,7 +12,6 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.util.Timespan;
 import ch.njol.util.Kleenean;
 import com.projectkorra.projectkorra.BendingPlayer;
-import com.projectkorra.projectkorra.BendingPlayer;
 import me.anxelok.Main;
 import me.anxelok.syntax.cooldown.CooldownHelper;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ public class ExprPlayerCooldownTimespan extends SimpleExpression<Timespan> {
             ExprPlayerCooldownTimespan.class,
             Timespan.class,
             ExpressionType.COMBINED,
-            "[the] [remaining] [pk] cooldown %string% (of|for) %player%"
+            "[the] [remaining] cooldown %string% (of|for) %player%"
         );
     }
 
@@ -80,6 +79,6 @@ public class ExprPlayerCooldownTimespan extends SimpleExpression<Timespan> {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "pk cooldown " + cooldownName.toString(event, debug) + " of " + playerExpr.toString(event, debug);
+        return "cooldown " + cooldownName.toString(event, debug) + " of " + playerExpr.toString(event, debug);
     }
 }

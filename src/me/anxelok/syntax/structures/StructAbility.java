@@ -32,8 +32,8 @@ import org.skriptlang.skript.lang.script.Script;
 @Examples({
     "ability AirBurst",
     "    element: Air",
-    "    description: Simple launch test",
-    "    instructions: Left click while sneaking",
+    "    description: air ability",
+    "    instructions: Left click to use air burst",
     "    author: AnxeloK",
     "    cooldown: 3 seconds",
     "",
@@ -45,7 +45,7 @@ import org.skriptlang.skript.lang.script.Script;
     "        send \"Air Burst ended\" to player",
     "",
     "on left click:",
-    "    start pk ability \"AirBurst\" for player"
+    "    start ability \"AirBurst\" for player"
 })
 @Since(Main.VERSION)
 public class StructAbility extends Structure {
@@ -178,7 +178,7 @@ public class StructAbility extends Structure {
 
     private Trigger createTrigger(String label, SectionNode section) {
         ParserInstance parser = getParser();
-        parser.setCurrentEvent("pk ability", SkriptAbilityTriggerEvent.class);
+        parser.setCurrentEvent("ability", SkriptAbilityTriggerEvent.class);
         try {
             Trigger trigger = new Trigger(parser.getCurrentScript(), label, new SimpleEvent(), ScriptLoader.loadItems(section));
             trigger.setLineNumber(section.getLine());

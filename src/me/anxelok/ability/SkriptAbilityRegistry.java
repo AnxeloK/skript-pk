@@ -193,8 +193,8 @@ public final class SkriptAbilityRegistry {
 
         try {
             Classes.registerClass(new ClassInfo<>(SkriptGeneratedAbility.class, "skriptability")
-                .name("PK Ability")
-                .user("pk abilities?")
+                .name("Generated Ability")
+                .user("addon abilities?")
                 .defaultExpression(new EventValueExpression<>(SkriptGeneratedAbility.class))
                 .parser(new Parser<SkriptGeneratedAbility>() {
                     @Override

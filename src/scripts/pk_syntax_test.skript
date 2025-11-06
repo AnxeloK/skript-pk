@@ -1,16 +1,16 @@
-# Test command for Skript-PK cooldown & temp block syntax
-command /pktempdebug:
+# Test command for addon cooldown & temp block syntax
+command /abilitydebug:
     permission: op
     trigger:
         set {_ability} to "WaterManipulation"
-        send "&7Cooldowns before: %{pk active cooldowns of player}%"
-        set {_remaining} to pk cooldown {_ability} of player
+        send "&7Cooldowns before: %{active cooldowns of player}%"
+        set {_remaining} to cooldown {_ability} of player
         send "&7Remaining before: %{_remaining}%"
-        set pk cooldown {_ability} for player to 5 seconds
-        set {_after} to pk cooldown {_ability} of player
+        set cooldown {_ability} for player to 5 seconds
+        set {_after} to cooldown {_ability} of player
         send "&aRemaining after set: %{_after}%"
-        reset pk cooldown {_ability} for player
-        reset all pk cooldowns for player
-        create pk temporary block at location of player with stone for 2 seconds
-        set {_blocks::*} to pk bendable blocks of earth for player within 20
+        reset cooldown {_ability} for player
+        reset all cooldowns for player
+        create temporary block at location of player with stone for 2 seconds
+        set {_blocks::*} to bendable blocks of "earth" for player within 20
         send "&bBendable blocks: %{_blocks::*}%"

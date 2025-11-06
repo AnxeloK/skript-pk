@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Main extends JavaPlugin {
 
-    public static final String VERSION = "v1.5";
+    public static final String VERSION = "1.5";
 
     @Override
     public void onEnable() {

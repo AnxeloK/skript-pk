@@ -18,11 +18,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
 
-@Name("PK Active Cooldown Names")
+@Name("Active Cooldown Names")
 @Description("Lists active ProjectKorra cooldowns for a player in the same order as /bending cooldown view.")
 @Examples({
-    "set {_cooldowns::*} to pk active cooldowns of player",
-    "loop pk active cooldowns of victim:"
+    "set {_cooldowns::*} to active cooldowns of player",
+    "loop active cooldowns of victim:"
 })
 @Since(Main.VERSION)
 public class ExprPlayerCooldownNames extends SimpleExpression<String> {
@@ -32,7 +32,7 @@ public class ExprPlayerCooldownNames extends SimpleExpression<String> {
             ExprPlayerCooldownNames.class,
             String.class,
             ExpressionType.COMBINED,
-            "[the] [pk] active cooldowns (of|for) %player%"
+            "[the] active cooldowns (of|for) %player%"
         );
     }
 
@@ -70,6 +70,6 @@ public class ExprPlayerCooldownNames extends SimpleExpression<String> {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "pk active cooldowns of " + playerExpr.toString(event, debug);
+        return "active cooldowns of " + playerExpr.toString(event, debug);
     }
 }

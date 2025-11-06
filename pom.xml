@@ -6,7 +6,7 @@
 
     <groupId>me.anxelok</groupId>
     <artifactId>skript-pk</artifactId>
-    <version>v1.5</version>
+    <version>1.5</version>
     <packaging>jar</packaging>
     <name>skript-pk</name>
 

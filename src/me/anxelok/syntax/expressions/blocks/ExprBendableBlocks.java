@@ -27,10 +27,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Name("PK Bendable Blocks")
+@Name("Bendable Blocks")
 @Description("Returns recent bendable block sources for a player's element using ProjectKorra's BlockSource logic.")
 @Examples({
-    "set {_blocks::*} to pk bendable blocks of element of player for player"
+    "set {_blocks::*} to bendable blocks of \"earth\" for player"
 })
 @Since(Main.VERSION)
 public class ExprBendableBlocks extends SimpleExpression<Block> {
@@ -40,15 +40,23 @@ public class ExprBendableBlocks extends SimpleExpression<Block> {
             ExprBendableBlocks.class,
             Block.class,
             ExpressionType.COMBINED,
-            "[the] [pk] bendable blocks of %element% for %player% [within %-number% [blocks]]"
+            "[the] bendable blocks of %string% for %player% [within %-number% [blocks]]"
         );
     }
 
     private static final Map<Element, Set<BlockSourceType>> SOURCE_MAP = new HashMap<>();
 
     static {
-        register(Element.WATER, BlockSourceType.WATER, BlockSourceType.ICE, BlockSourceType.PLANT, BlockSourceType.SNOW, BlockSourceType.MUD);
-        register(Element.EARTH, BlockSourceType.EARTH, BlockSourceType.METAL, BlockSourceType.LAVA, BlockSourceType.MUD);
+        register(Element.WATER, type("WATER"), type("ICE"), type("PLANT"), type("SNOW"), type("MUD"));
+        register(Element.EARTH, type("EARTH"), type("METAL"), type("LAVA"), type("MUD"));
+    }
+
+    private static BlockSourceType type(String name) {
+        try {
+            return BlockSourceType.valueOf(name);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
     private static void register(Element element, BlockSourceType... types) {
@@ -66,14 +74,14 @@ public class ExprBendableBlocks extends SimpleExpression<Block> {
         SOURCE_MAP.put(element, set);
     }
 
-    private Expression<Element> elementExpr;
+    private Expression<String> elementNameExpr;
     private Expression<Player> playerExpr;
     private @Nullable Expression<Number> rangeExpr;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean kleenean, ParseResult parseResult) {
-        elementExpr = (Expression<Element>) expressions[0];
+        elementNameExpr = (Expression<String>) expressions[0];
         playerExpr = (Expression<Player>) expressions[1];
         rangeExpr = (Expression<Number>) expressions[2];
         return true;
@@ -81,9 +89,15 @@ public class ExprBendableBlocks extends SimpleExpression<Block> {
 
     @Override
     protected Block[] get(Event event) {
-        Element element = elementExpr.getSingle(event);
+        String elementName = elementNameExpr.getSingle(event);
         Player player = playerExpr.getSingle(event);
-        if (element == null || player == null) {
+        if (elementName == null || player == null) {
+            return new Block[0];
+        }
+
+        Element element = Element.getElement(elementName);
+        if (element == null) {
+            Skript.error("Unknown element '" + elementName + "' while retrieving bendable blocks.");
             return new Block[0];
         }
 
@@ -134,6 +148,6 @@ public class ExprBendableBlocks extends SimpleExpression<Block> {
     @Override
     public String toString(@Nullable Event event, boolean debug) {
         String range = rangeExpr != null ? " within " + rangeExpr.toString(event, debug) : "";
-        return "pk bendable blocks of " + elementExpr.toString(event, debug) + " for " + playerExpr.toString(event, debug) + range;
+        return "bendable blocks of " + elementNameExpr.toString(event, debug) + " for " + playerExpr.toString(event, debug) + range;
     }
 }

@@ -19,17 +19,17 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-@Name("Start PK Ability")
-@Description("Launches a registered Skript-PK ability for a specific player. This only works with abilities created through the addon.")
+@Name("Start Ability")
+@Description("Launches a registered ProjectKorra ability defined through this addon for a specific player.")
 @Examples({
-    "start pk ability \"Air Gust\" for player",
-    "start pk ability \"Toss\" for victim"
+    "start ability \"Air Gust\" for player",
+    "start ability \"Toss\" for victim"
 })
 @Since(Main.VERSION)
 public class EffStartAbility extends Effect {
 
     static {
-        Skript.registerEffect(EffStartAbility.class, "start [pk] ability %string% for %player%");
+        Skript.registerEffect(EffStartAbility.class, "start ability %string% for %player%");
     }
 
     private Expression<String> abilityNameExpression;
@@ -53,7 +53,7 @@ public class EffStartAbility extends Effect {
 
         CoreAbility coreAbility = CoreAbility.getAbility(abilityName);
         if (!(coreAbility instanceof SkriptGeneratedAbility)) {
-            Skript.warning("Ability '" + abilityName + "' is not a PK ability managed by Skript-PK.");
+            Skript.warning("Ability '" + abilityName + "' is not managed by this addon.");
             return;
         }
 
@@ -69,6 +69,6 @@ public class EffStartAbility extends Effect {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "start PK ability " + abilityNameExpression.toString(event, debug) + " for " + playerExpression.toString(event, debug);
+        return "start ability " + abilityNameExpression.toString(event, debug) + " for " + playerExpression.toString(event, debug);
     }
 }

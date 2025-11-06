@@ -15,11 +15,11 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Is PK Temp Block")
+@Name("Is Temp Block")
 @Description("Checks whether a location is occupied by a ProjectKorra TempBlock.")
 @Examples({
-    "if location of target is a pk temporary block:",
-    "\trevert pk temporary block at location of target"
+    "if location of target is a temporary block:",
+    "\trevert temporary block at location of target"
 })
 @Since(Main.VERSION)
 public class CondIsTempBlock extends Condition {
@@ -27,8 +27,8 @@ public class CondIsTempBlock extends Condition {
     static {
         Skript.registerCondition(
             CondIsTempBlock.class,
-            "%location% is [a] [pk] temp[orary] block",
-            "%location% is(n't| not) [a] [pk] temp[orary] block"
+            "%location% is [a] temp[orary] block",
+            "%location% is(n't| not) [a] temp[orary] block"
         );
     }
 
@@ -54,6 +54,6 @@ public class CondIsTempBlock extends Condition {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return locationExpression.toString(event, debug) + (isNegated() ? " is not a pk temporary block" : " is a pk temporary block");
+        return locationExpression.toString(event, debug) + (isNegated() ? " is not a temporary block" : " is a temporary block");
     }
 }

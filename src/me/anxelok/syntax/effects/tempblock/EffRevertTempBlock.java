@@ -20,11 +20,11 @@ import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Revert PK Temp Block")
+@Name("Revert Temp Block")
 @Description("Reverts a ProjectKorra TempBlock at a location, optionally specifying the default material.")
 @Examples({
-    "revert pk temporary block at {_loc}",
-    "revert pk temporary block at player to water"
+    "revert temporary block at {_loc}",
+    "revert temporary block at player to water"
 })
 @Since(Main.VERSION)
 public class EffRevertTempBlock extends Effect {
@@ -32,7 +32,7 @@ public class EffRevertTempBlock extends Effect {
     static {
         Skript.registerEffect(
             EffRevertTempBlock.class,
-            "revert [the] [pk] temp[orary] block at %location% [to %-itemtype%]"
+            "revert [the] temp[orary] block at %location% [to %-itemtype%]"
         );
     }
 
@@ -74,8 +74,8 @@ public class EffRevertTempBlock extends Effect {
     @Override
     public String toString(@Nullable Event event, boolean debug) {
         if (materialExpression != null) {
-            return "revert pk temporary block at " + locationExpression.toString(event, debug) + " to " + materialExpression.toString(event, debug);
+            return "revert temporary block at " + locationExpression.toString(event, debug) + " to " + materialExpression.toString(event, debug);
         }
-        return "revert pk temporary block at " + locationExpression.toString(event, debug);
+        return "revert temporary block at " + locationExpression.toString(event, debug);
     }
 }
