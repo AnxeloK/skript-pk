@@ -26,13 +26,5 @@ Designed for simplicity, it empowers server owners to create unique bending expe
 ---
 
 ## Requirements
-- Minecraft 1.15+
 - Skript 2.10.1+
 - ProjectKorra (Core) 1.11.1+
-
----
-
-## What's New in v1.5
-- Ability structure & runtime wiring to register custom ProjectKorra abilities purely via Skript (`ability` structure, start/progress/remove triggers).
-- Temp block helpers (`create/revert temporary block`, `location is a temporary block`) to mirror ProjectKorra's `TempBlock` API.
-- Cooldown management syntax aligned with `/bending cooldown` (`cooldown %name% of %player%`, `set/reset cooldown` effects, `active cooldowns of %player%`).
