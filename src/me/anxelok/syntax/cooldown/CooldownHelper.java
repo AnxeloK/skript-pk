@@ -93,6 +93,13 @@ public final class CooldownHelper {
         return null;
     }
 
+    public static boolean isAllToken(String token) {
+        if (token == null) {
+            return false;
+        }
+        return ALL_TOKEN.equals(token);
+    }
+
     private static Set<String> getKnownCooldowns() {
         Set<String> known = new HashSet<>();
 
