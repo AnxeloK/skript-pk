@@ -106,7 +106,7 @@ public final class SkriptAbilityRegistry {
         REGISTERED_BY_CLASS.put(abilityClass, registered);
 
         if (plugin != null) {
-            plugin.getLogger().info("[Skript-PK] Registered ability " + definition.getName());
+            plugin.getLogger().info("Registered ability " + definition.getName());
         }
 
         return registered;
@@ -136,7 +136,7 @@ public final class SkriptAbilityRegistry {
         }
 
         if (plugin != null) {
-            plugin.getLogger().info("[Skript-PK] Unregistered ability " + registered.getDefinition().getName());
+            plugin.getLogger().info("Unregistered ability " + registered.getDefinition().getName());
         }
     }
 

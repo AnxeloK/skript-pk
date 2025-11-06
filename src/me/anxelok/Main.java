@@ -14,27 +14,27 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        getLogger().info("[Skript-PK] Enabling Skript-PK...");
+        getLogger().info("Enabling Skript-PK...");
 
         // check if Skript is installed
         if (getServer().getPluginManager().getPlugin("Skript") == null) {
-            getLogger().severe("[Skript-PK] ERROR: Skript not found! Disabling plugin.");
+            getLogger().severe("ERROR: Skript not found! Disabling plugin.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
         // check if ProjectKorra is installed
         if (getServer().getPluginManager().getPlugin("ProjectKorra") == null) {
-            getLogger().severe("[Skript-PK] ERROR: ProjectKorra not found! Disabling plugin.");
+            getLogger().severe("ERROR: ProjectKorra not found! Disabling plugin.");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
         SkriptAbilityRegistry.init(this);
 
-        getLogger().info("[Skript-PK] Registering ability structure...");
+        getLogger().info("Registering ability structure...");
 
         // register skript syntax
-        getLogger().info("[Skript-PK] Registering Skript syntax...");
+        getLogger().info("Registering Skript syntax...");
         SkriptAddon addon = Skript.registerAddon(this);
 
         try {
@@ -49,7 +49,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("[Skript-PK] Disabling Skript-PK...");
+        getLogger().info("Disabling Skript-PK...");
         SkriptAbilityRegistry.shutdown();
     }
 }
