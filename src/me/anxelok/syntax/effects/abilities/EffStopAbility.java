@@ -18,8 +18,11 @@ import org.jetbrains.annotations.Nullable;
 @Name("Stop Ability")
 @Description("Ends a running ProjectKorra ability generated through this addon. When used without an argument inside start/progress/remove sections, it stops the active ability instance.")
 @Examples({
+    "# stop the current ability inside an ability section",
     "stop ability",
+    "# stop the ability that triggered the current event",
     "stop ability event-ability",
+    "# stop a stored ability instance explicitly",
     "stop ability {_ability}"
 })
 @Since(Main.VERSION)

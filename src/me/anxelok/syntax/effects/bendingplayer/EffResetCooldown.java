@@ -23,7 +23,9 @@ import java.util.Map;
 @Name("Reset Cooldown")
 @Description("Clears a ProjectKorra cooldown for a player, or removes every active cooldown when using the \"all\" variant.")
 @Examples({
+    "# remove a specific cooldown from the player",
     "reset cooldown \"WaterManipulation\" for player",
+    "# clear every active cooldown for the victim",
     "reset all cooldowns of victim"
 })
 @Since(Main.VERSION)

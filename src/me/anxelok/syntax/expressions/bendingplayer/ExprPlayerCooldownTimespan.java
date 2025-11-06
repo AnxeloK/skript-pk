@@ -18,6 +18,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
+@Name("Remaining Cooldown Timespan")
+@Description("Returns the remaining duration of a ProjectKorra cooldown for a player as a timespan. Returns zero when the cooldown is not active.")
+@Examples({
+    "# store the remaining time of a cooldown",
+    "set {_remaining} to remaining cooldown \"fireblast\" of player",
+    "# check if a victim still has an active cooldown",
+    "if remaining cooldown \"avatarstate\" of victim is greater than 0:"
+})
+@Since(Main.VERSION)
 public class ExprPlayerCooldownTimespan extends SimpleExpression<Timespan> {
 
     static {

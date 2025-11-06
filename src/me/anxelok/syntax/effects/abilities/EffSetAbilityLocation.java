@@ -19,7 +19,9 @@ import org.jetbrains.annotations.Nullable;
 @Name("Set Ability Location")
 @Description("Sets the anchor location for a running ability instance generated through this addon, allowing you to track it independently from the player.")
 @Examples({
+    "# anchor the active event ability to the player's location",
     "set location of event-ability to location of player",
+    "# move a stored ability instance to a marker location",
     "set location of {_ability} to {_marker}"
 })
 @Since(Main.VERSION)

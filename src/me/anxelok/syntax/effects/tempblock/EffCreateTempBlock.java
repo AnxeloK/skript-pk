@@ -24,8 +24,11 @@ import org.jetbrains.annotations.Nullable;
 @Name("Create Temp Block")
 @Description("Creates a ProjectKorra TempBlock at the specified location, optionally reverting after a duration.")
 @Examples({
+    "# replace the player's block with stone for five seconds",
     "create temp block at location of player with stone for 5 seconds",
+    "# use precomputed block data for precise states",
     "create temp block at {_loc} with blockdata {_data}",
+    "# turn the victim's location into water temporarily",
     "create temp block at location of victim with water for 2 seconds"
 })
 @Since(Main.VERSION)

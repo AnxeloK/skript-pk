@@ -30,6 +30,7 @@ import java.util.Set;
 @Name("Bendable Blocks")
 @Description("Returns recent bendable block sources for a player's element using ProjectKorra's BlockSource logic.")
 @Examples({
+    "# collect nearby bendable blocks for the player's earth element",
     "set {_blocks::*} to bendable blocks of \"earth\" for player"
 })
 @Since(Main.VERSION)

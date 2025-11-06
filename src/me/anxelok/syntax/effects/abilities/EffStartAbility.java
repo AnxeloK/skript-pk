@@ -22,7 +22,9 @@ import java.lang.reflect.InvocationTargetException;
 @Name("Start Ability")
 @Description("Launches a registered ProjectKorra ability defined through this addon for a specific player.")
 @Examples({
+    "# trigger a custom ability for the player",
     "start ability \"Air Gust\" for player",
+    "# start an ability for the victim of an event",
     "start ability \"Toss\" for victim"
 })
 @Since(Main.VERSION)

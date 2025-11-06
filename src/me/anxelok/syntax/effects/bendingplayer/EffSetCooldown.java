@@ -20,7 +20,9 @@ import org.jetbrains.annotations.Nullable;
 @Name("Set Cooldown")
 @Description("Sets a ProjectKorra cooldown for a player. Using a non-positive duration removes the cooldown instead.")
 @Examples({
+    "# give the player five seconds of cooldown on WaterManipulation",
     "set cooldown \"WaterManipulation\" for player to 5 seconds",
+    "# apply a dynamic cooldown length to the victim",
     "set cooldown {_ability} of victim to 2 minutes"
 })
 @Since(Main.VERSION)

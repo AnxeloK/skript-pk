@@ -21,7 +21,9 @@ import java.util.Comparator;
 @Name("Active Cooldown Names")
 @Description("Lists active ProjectKorra cooldowns for a player in the same order as /bending cooldown view.")
 @Examples({
+    "# store the player's active cooldown names",
     "set {_cooldowns::*} to active cooldowns of player",
+    "# iterate through a victim's active cooldowns",
     "loop active cooldowns of victim:"
 })
 @Since(Main.VERSION)

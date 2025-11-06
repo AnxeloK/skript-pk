@@ -18,7 +18,9 @@ import org.jetbrains.annotations.Nullable;
 @Name("Is Temp Block")
 @Description("Checks whether a location is occupied by a ProjectKorra TempBlock.")
 @Examples({
+    "# check if the target location is a temporary block",
     "if location of target is a temporary block:",
+    "# revert the temp block if it exists",
     "\trevert temporary block at location of target"
 })
 @Since(Main.VERSION)

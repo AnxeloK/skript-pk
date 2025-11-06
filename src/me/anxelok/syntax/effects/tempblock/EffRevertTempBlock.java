@@ -23,7 +23,9 @@ import org.jetbrains.annotations.Nullable;
 @Name("Revert Temp Block")
 @Description("Reverts a ProjectKorra TempBlock at a location, optionally specifying the default material.")
 @Examples({
+    "# revert a temporary block at a stored location",
     "revert temporary block at {_loc}",
+    "# revert the block at the player's feet and force it to water",
     "revert temporary block at player to water"
 })
 @Since(Main.VERSION)
