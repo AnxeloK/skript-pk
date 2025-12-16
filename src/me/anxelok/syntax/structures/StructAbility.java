@@ -15,10 +15,10 @@ import ch.njol.skript.util.Timespan;
 import ch.njol.skript.config.SectionNode;
 import com.projectkorra.projectkorra.Element;
 import me.anxelok.Main;
-import me.anxelok.ability.SkriptAbilityDefinition;
-import me.anxelok.ability.SkriptAbilityRegistry;
-import me.anxelok.ability.SkriptAbilityRegistry.RegisteredAbility;
-import me.anxelok.ability.SkriptAbilityTriggerEvent;
+import me.anxelok.ability.AbilityDefinition;
+import me.anxelok.ability.AbilityRegistry;
+import me.anxelok.ability.AbilityRegistry.RegisteredAbility;
+import me.anxelok.ability.AbilityTriggerEvent;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 import org.skriptlang.skript.lang.entry.EntryContainer;
@@ -45,7 +45,7 @@ import org.skriptlang.skript.lang.script.Script;
     "        send \"Air Burst ended\" to player",
     "",
     "on left click:",
-    "    start ability \"AirBurst\" for player"
+    "    start ability AirBurst for player"
 })
 @Since(Main.VERSION)
 public class StructAbility extends Structure {
@@ -54,11 +54,11 @@ public class StructAbility extends Structure {
         Skript.registerStructure(
             StructAbility.class,
             EntryValidator.builder()
-                .addEntry("element", null, false)
                 .addEntry("description", "", true)
                 .addEntry("instructions", "", true)
                 .addEntry("author", "Unknown", true)
                 .addEntry("version", "1.0.0", true)
+                .addEntryData(new LiteralEntryData<>("element", null, false, Element.class))
                 .addEntryData(new LiteralEntryData<>("cooldown", null, true, Timespan.class))
                 .addEntryData(new LiteralEntryData<>("sneak ability", false, true, Boolean.class))
                 .addEntryData(new LiteralEntryData<>("hidden", false, true, Boolean.class))
@@ -110,12 +110,7 @@ public class StructAbility extends Structure {
         }
 
         abilityName = namePart;
-        String elementName = entryContainer.get("element", String.class, true);
-        Element element = Element.getElement(elementName);
-        if (element == null) {
-            Skript.error("Unknown element '" + elementName + "' for ability " + abilityName);
-            return false;
-        }
+        Element element = entryContainer.get("element", Element.class, true);
 
         Timespan cooldownSpan = entryContainer.getOptional("cooldown", Timespan.class, false);
         long cooldownMillis = cooldownSpan != null ? cooldownSpan.getMilliSeconds() : 0L;
@@ -125,7 +120,7 @@ public class StructAbility extends Structure {
         boolean harmless = entryContainer.getOptional("harmless", Boolean.class, false);
         boolean ignite = entryContainer.getOptional("ignite ability", Boolean.class, false);
         boolean explosive = entryContainer.getOptional("explosive ability", Boolean.class, false);
-        boolean defaultPermission = entryContainer.getOptional("default permission", Boolean.class, false);
+        boolean defaultPermission = entryContainer.getOptional("default permission", Boolean.class, true);
 
         String description = entryContainer.get("description", String.class, true);
         String instructions = entryContainer.get("instructions", String.class, true);
@@ -151,7 +146,7 @@ public class StructAbility extends Structure {
         }
 
         Script script = getParser().getCurrentScript();
-        SkriptAbilityDefinition.Builder builder = SkriptAbilityDefinition.builder(abilityName, element, script, startTrigger)
+        AbilityDefinition.Builder builder = AbilityDefinition.builder(abilityName, element, script, startTrigger)
             .description(description)
             .instructions(instructions)
             .author(author)
@@ -167,7 +162,7 @@ public class StructAbility extends Structure {
             .removeTrigger(removeTrigger);
 
         try {
-            registeredAbility = SkriptAbilityRegistry.registerAbility(builder.build());
+            registeredAbility = AbilityRegistry.registerAbility(builder.build());
         } catch (IllegalArgumentException | IllegalStateException ex) {
             Skript.error(ex.getMessage());
             return false;
@@ -178,7 +173,7 @@ public class StructAbility extends Structure {
 
     private Trigger createTrigger(String label, SectionNode section) {
         ParserInstance parser = getParser();
-        parser.setCurrentEvent("ability", SkriptAbilityTriggerEvent.class);
+        parser.setCurrentEvent("ability", AbilityTriggerEvent.class);
         try {
             Trigger trigger = new Trigger(parser.getCurrentScript(), label, new SimpleEvent(), ScriptLoader.loadItems(section));
             trigger.setLineNumber(section.getLine());
@@ -194,7 +189,7 @@ public class StructAbility extends Structure {
     @Override
     public void unload() {
         if (registeredAbility != null) {
-            SkriptAbilityRegistry.unregisterAbility(registeredAbility.getAbilityClass());
+            AbilityRegistry.unregisterAbility(registeredAbility.getAbilityClass());
             registeredAbility = null;
         }
     }

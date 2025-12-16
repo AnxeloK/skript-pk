@@ -2,6 +2,8 @@
 
 A Skript addon designed to seamlessly integrate **ProjectKorra** abilities and mechanics into Skript. This plugin enables server administrators to interact with ProjectKorra's bending system through Skript syntax, allowing for custom scripting of bending-related actions, presets, and player management.
 
+Current version: 2.0 (refreshed naming consistency, typed `%ability%`/`%element%` syntax, sub-element support, and lifecycle cleanup).
+
 ---
 
 ## Overview

@@ -1,16 +1,18 @@
 package me.anxelok.ability;
 
-import me.anxelok.ability.SkriptGeneratedAbility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+import me.anxelok.ability.AbilityDefinition;
+import me.anxelok.ability.GeneratedAbility;
+
 /**
  * Lightweight Bukkit event used to execute Skript triggers for generated abilities.
  */
-public class SkriptAbilityTriggerEvent extends Event implements Cancellable {
+public class AbilityTriggerEvent extends Event implements Cancellable {
 
     public enum Phase {
         START,
@@ -20,23 +22,23 @@ public class SkriptAbilityTriggerEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    private final SkriptGeneratedAbility ability;
-    private final SkriptAbilityDefinition definition;
+    private final GeneratedAbility ability;
+    private final AbilityDefinition definition;
     private final Phase phase;
     private boolean cancelled;
 
-    public SkriptAbilityTriggerEvent(SkriptGeneratedAbility ability, SkriptAbilityDefinition definition, Phase phase) {
+    public AbilityTriggerEvent(GeneratedAbility ability, AbilityDefinition definition, Phase phase) {
         super(!Bukkit.isPrimaryThread());
         this.ability = ability;
         this.definition = definition;
         this.phase = phase;
     }
 
-    public SkriptGeneratedAbility getAbility() {
+    public GeneratedAbility getAbility() {
         return ability;
     }
 
-    public SkriptAbilityDefinition getDefinition() {
+    public AbilityDefinition getDefinition() {
         return definition;
     }
 

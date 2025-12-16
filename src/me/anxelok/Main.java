@@ -2,14 +2,14 @@ package me.anxelok;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import me.anxelok.ability.SkriptAbilityRegistry;
+import me.anxelok.ability.AbilityRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
 
 public class Main extends JavaPlugin {
 
-    public static final String VERSION = "1.5";
+    public static final String VERSION = "2.0";
 
     @Override
     public void onEnable() {
@@ -29,7 +29,7 @@ public class Main extends JavaPlugin {
             return;
         }
 
-        SkriptAbilityRegistry.init(this);
+        AbilityRegistry.init(this);
 
         getLogger().info("Registering ability structure...");
 
@@ -50,6 +50,6 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling Skript-PK...");
-        SkriptAbilityRegistry.shutdown();
+        AbilityRegistry.shutdown();
     }
 }

@@ -8,7 +8,7 @@ import org.skriptlang.skript.lang.script.Script;
 /**
  * Immutable description of a Skript-PK defined ProjectKorra ability, including metadata and compiled triggers.
  */
-public final class SkriptAbilityDefinition {
+public final class AbilityDefinition {
 
     private final String name;
     private final Element element;
@@ -28,7 +28,7 @@ public final class SkriptAbilityDefinition {
     private final @Nullable Trigger removeTrigger;
     private final Script script;
 
-    private SkriptAbilityDefinition(Builder builder) {
+    private AbilityDefinition(Builder builder) {
         this.name = builder.name;
         this.element = builder.element;
         this.sneakAbility = builder.sneakAbility;
@@ -125,7 +125,7 @@ public final class SkriptAbilityDefinition {
     }
 
     public String getPermissionNode() {
-        return "bending.ability." + name;
+        return AbilityNaming.permissionNode(name);
     }
 
     public static Builder builder(String name, Element element, Script script, Trigger startTrigger) {
@@ -224,8 +224,8 @@ public final class SkriptAbilityDefinition {
             return this;
         }
 
-        public SkriptAbilityDefinition build() {
-            return new SkriptAbilityDefinition(this);
+        public AbilityDefinition build() {
+            return new AbilityDefinition(this);
         }
     }
 }

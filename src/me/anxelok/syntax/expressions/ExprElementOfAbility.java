@@ -1,68 +1,79 @@
 package me.anxelok.syntax.expressions;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.lang.util.SimpleExpression;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Expression;
+import ch.njol.skript.lang.ExpressionType;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.Element;
+import me.anxelok.Main;
+import me.anxelok.ability.GeneratedAbility;
+import me.anxelok.ability.LazyAbilityReference;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
-import com.projectkorra.projectkorra.ability.Ability;
-import com.projectkorra.projectkorra.Element;
-import ch.njol.skript.doc.*;
-
-import me.anxelok.Main;
 
 @Name("Get Bending Element of Ability")
-@Description("Returns the element type (Water, Earth, Fire, Air, Chi, or sub-elements) of a specified ProjectKorra ability. Returns nothing if the ability doesn't exist.")
+@Description("Returns the element (Water, Earth, Fire, Air, Chi, or sub-elements) of a specified ProjectKorra ability reference. Returns nothing if the ability isn't available.")
 @Examples({
     "# Get the element of WaterSpout",
-    "set {_element} to element of ability \"WaterSpout\"",
+    "set {_element} to element of ability WaterSpout",
     "# Check if an ability is from a specific element",
-    "if element of ability \"EarthBlast\" is \"Earth\":",
+    "if element of ability EarthBlast is earth:",
     "    send \"That's an earth ability!\""
 })
 @Since(Main.VERSION)
-public class ExprElementOfAbility extends SimpleExpression<String> {
+public class ExprElementOfAbility extends SimpleExpression<Element> {
 
-    private Expression<String> abilityExpr;
+    private Expression<GeneratedAbility> abilityExpr;
 
     static {
-        Skript.registerExpression(ExprElementOfAbility.class, String.class,
-                ch.njol.skript.lang.ExpressionType.SIMPLE,
-                "element of ability %string%");
+        Skript.registerExpression(ExprElementOfAbility.class, Element.class,
+                ExpressionType.SIMPLE,
+                "element of ability %ability%");
     }
 
     @Override
-    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ch.njol.skript.lang.SkriptParser.ParseResult parseResult) {
-        abilityExpr = (Expression<String>) exprs[0];
+    @SuppressWarnings("unchecked")
+    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
+        abilityExpr = (Expression<GeneratedAbility>) exprs[0];
         return true;
     }
 
     @Nullable
     @Override
-    protected String[] get(Event e) {
-        String abilityName = abilityExpr.getSingle(e);
-        if (abilityName == null) return new String[0];
-
-        Ability ability = CoreAbility.getAbility(abilityName);
-        if (ability == null) return new String[0];
-
+    protected Element[] get(Event e) {
+        GeneratedAbility ability = abilityExpr.getSingle(e);
+        if (ability == null) {
+            return new Element[0];
+        }
+        if (ability instanceof LazyAbilityReference) {
+            GeneratedAbility resolved = ((LazyAbilityReference) ability).resolve();
+            if (resolved != null) {
+                ability = resolved;
+            } else {
+                return new Element[0];
+            }
+        }
         Element element = ability.getElement();
-        if (element == null) return new String[0];
-
-        // Return the clean name of the element (without color codes or formatting)
-        return new String[] { element.getName() };
+        if (element == null) {
+            return new Element[0];
+        }
+        return new Element[]{element};
     }
 
     @Override
     public boolean isSingle() {
-        return true;  // only one result
+        return true;
     }
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Element> getReturnType() {
+        return Element.class;
     }
 
     @Override
